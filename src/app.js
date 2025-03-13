@@ -1,25 +1,25 @@
-const express = require('express');
+const express = require("express");
 const app = express();
 
+// app.get("/user/:userId/:name/:password", (req, res) => {
+//     // console.log(req.params)
+//     // res.send({ firstName: "Sujeet", lastName: "Kumar" })
+// });
+// syntex app.use("/routePath", rh1,rh2,rh3,....)
+//route handler might be in array or in object
+app.use(
+  "/user",
+  (req, res, next) => {
+    console.log("Hsndling the route user !!");
+    res.send("1st Response");
+    next();
+  },
+  (req, res) => {
+    console.log("2nd Handling the route user !!");
+    res.send("2nd Response");
+  }
+);
 
-app.use("user",(req,res)=>{
-    res.send("Heyyyyyyyyyyy")
-})
-//This will only handle GET call to users
-app.get("/user",(req,res)=>{
-    res.send({firstName: "Sujeet", lastName:"Kumar"})
-});
-app.post("/user",(req,res)=>{
-    // console.log("save data to the database");
-    res.send("saving the data to database");
-});
-app.delete("/user",(req,res)=>{
-    res.send("deleted successfully");
-});
-//this will match all the HTTP method API calls to /test
-app.use("/test",(req,res)=>{
-    res.send("hello")
-})
-app.listen(7777,()=>{
-    console.log('server is successfully running at 3000');
+app.listen(7777, () => {
+  console.log("server is successfully running at 7777");
 });

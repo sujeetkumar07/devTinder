@@ -1,19 +1,22 @@
 const express = require("express");
 const app = express();
-const { adminAuth, userAuth } = require("./middleWare/auth");
 
+app.get("/getUserData", (req, res) => {
+  try {
+    throw new Error("gedygrue");
+    res.send("All Data sent");
+  } catch (err) {
+    res.status(500).send("something went wrong connect with support team");
+  }
+});
 
-/* This is middleWare starting from .use or .all*/
-app.use("/admin", adminAuth);
-// app.use("/user", userAuth);
-app.use("/user", userAuth, (req, res) => {
+app.use("/", (err, req, res, next) => {
+  //all parameter order matters
+  if (err) {
+    //log eror as well
+    res.status(500).send("Something went wrong");
+  }
   res.send("User sent a data");
-});
-app.get("/admin/getAllData", (req, res) => {
-  res.send("All Data sent");
-});
-app.delete("/admin/deleteAdmin", (req, res) => {
-  res.send("All Data deleted");
 });
 
 app.listen(7777, () => {

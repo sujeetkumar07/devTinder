@@ -1,24 +1,43 @@
 const express = require("express");
+const { connectDB } = require("./config/database");
 const app = express();
+const User = require("./models/user");
 
-app.get("/getUserData", (req, res) => {
+app.post("/signup", async (req, res) => {
+  // const userObj = {
+  //   firstName: "Sujeet",
+  //   lastName: "Kumar",
+  //   emailId: "sujeet181294@gmail.com",
+  //   password: "12345",
+  // };
+  // try {
+  //   const createdUser = await User.create(userObj);
+  //   res.send("User Added successfully");
+  // } catch (err) {
+  //   console.log("err");
+  // }
+  /* 2nd method to create the db*/
+  const user = new User({
+    firstName: "Pallabi",
+    lastName: "Prasad",
+    emailId: "Pallabi181294@gmail.com",
+    password: "12345",
+  });
   try {
-    throw new Error("gedygrue");
-    res.send("All Data sent");
+    await user.save();
+    res.send("User Added successfully");
   } catch (err) {
-    res.status(500).send("something went wrong connect with support team");
+    res.status(400).send("failed to save data", err.message);
   }
 });
 
-app.use("/", (err, req, res, next) => {
-  //all parameter order matters
-  if (err) {
-    //log eror as well
-    res.status(500).send("Something went wrong");
-  }
-  res.send("User sent a data");
-});
-
-app.listen(7777, () => {
-  console.log("server is successfully running at 7777");
-});
+connectDB()
+  .then(() => {
+    console.log("mongoose connected to the mongoDB");
+    app.listen(7777, () => {
+      console.log("server is successfully running at 7777");
+    });
+  })
+  .catch((err) => {
+    console.log("Error in mongoose connection");
+  });

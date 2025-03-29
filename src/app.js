@@ -3,7 +3,7 @@ const { connectDB } = require("./config/database");
 const app = express();
 const User = require("./models/user");
 
-app.use(express.json());
+app.use(express.json()); //middle ware
 app.post("/signup", async (req, res) => {
   console.log(req.body);
   const user = new User(req.body);
@@ -50,17 +50,34 @@ app.delete("/user", async (req, res) => {
 
 // update userAPI
 
-app.patch("/user", async (req, res) => {
-  const userId = req.body.userId;
-  const updatedObj = req.body; //iss id pe updated object push ho jayenge
+app.patch("/user/:userId", async (req, res) => {
+  const userId = req.params?.userId;
+  const currentObj = req.body; //iss id pe updated object push ho jayenge
   try {
-    const user = await User.findByIdAndUpdate({ _id: userId }, updatedObj, {
-      returnDocument:"after",
-      runValidators:true
+    const what_Allowed = [
+      "userId",
+      "photoUrl",
+      "about",
+      "gender",
+      "age",
+      "skills",
+    ];
+    const isUpdate = Object.keys(currentObj).every((k) => {
+      return what_Allowed.includes(k);
+    });
+    if (!isUpdate) {
+      throw new Error("update not allowed");
+    }
+    if (currentObj?.skills.length > 3) {
+      throw new Error("only update 3 skills");
+    }
+    const user = await User.findByIdAndUpdate({ _id: userId }, currentObj, {
+      returnDocument: "after",
+      runValidators: true,
     });
     res.send("user is updated ");
   } catch (err) {
-    res.status(400).send("something went wrong");
+    res.status(400).send("Update failed " + err.message);
   }
 });
 

@@ -23,9 +23,6 @@ const userSchema = new Schema(
     },
     password: { type: String },
     userId: { type: String },
-    gender: {
-      type: String,
-    },
     photoUrl: {
       type: String,
       default: "https://stock.adobe.com/in/search?k=admin",

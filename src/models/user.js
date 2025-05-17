@@ -11,10 +11,14 @@ const userSchema = new Schema(
     age: { type: Number, min: 18 },
     gender: {
       type: String,
-      validate(value) {
-        if (!["male", "female", "other"].includes(value)) {
-          throw new Error("Gender data not present");
-        }
+      // validate(value) {
+      //   if (!["male", "female", "other"].includes(value)) {
+      //     throw new Error("Gender data not present");
+      //   }
+      // },
+      enum: {
+        values: ["male", "female", "other"],
+        message: `{VALUE} is not a valid gender type`,
       },
     },
     emailId: {

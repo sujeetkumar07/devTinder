@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require("express");
 const cors = require("cors");
 const { connectDB } = require("./config/database");
@@ -25,7 +26,7 @@ app.use("/", userRouter);
 connectDB()
   .then(() => {
     console.log("mongoose connected to the mongoDB");
-    app.listen(7777, () => {
+    app.listen(process.env.PORT, () => {
       console.log("server is successfully running at 7777");
     });
   })

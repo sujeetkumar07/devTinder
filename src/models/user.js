@@ -20,6 +20,13 @@ const userSchema = new Schema(
         values: ["male", "female", "other"],
         message: `{VALUE} is not a valid gender type`,
       },
+      isPremium: {
+        type: Boolean,
+        default: false,
+      },
+      membershipType: {
+        type: String,
+      },
     },
     emailId: {
       type: String,
